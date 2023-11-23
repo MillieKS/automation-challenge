@@ -64,7 +64,52 @@ public class AutomationTest {
         takeScreenshot(driver, "add_todo.png");
 
     }
+//    Can't add a todo item if the input is empty
+    @Test
+    void InsertEmptyToDoItem() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
 
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("");
+
+//        WebElement ToDoBar = new WebDriverWait(driver, Duration.ofSeconds(10))
+//                .until(driver -> driver.findElement(By.cssSelector(".new-todo")));
+////                driver.findElement(By.cssSelector(".new-todo"));
+//
+//        ToDoBar.sendKeys("");
+//        ToDoBar.sendKeys(Keys.ENTER);
+
+        // WebElement ToDoList = driver.findElement(By.cssSelector(".view > label"));
+        // assertFalse("TodoList exists", ToDoList != null);
+        takeScreenshot(driver, "empty_todo.png");
+
+
+    }
+
+    @Test
+    void AddSingleCharacterToDoItem() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("A");
+
+//        WebElement ToDoBar = new WebDriverWait(driver, Duration.ofSeconds(10))
+//                .until(driver -> driver.findElement(By.cssSelector(".new-todo")));
+//        ToDoBar.sendKeys("A");
+//        ToDoBar.sendKeys(Keys.ENTER);
+
+        WebElement ToDoList = driver.findElement(By.cssSelector(".view > label"));
+        assertTrue(ToDoList.getText().contains("A"));
+
+        takeScreenshot(driver, "add_single_character_todo.png");
+
+    }
 
 
 
