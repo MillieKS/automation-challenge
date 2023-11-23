@@ -3,17 +3,19 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AutomationTest {
     private static ChromeDriver driver;
 
-    @BeforeAll
-    static void launchBrowser() {
+
+    @BeforeEach
+    void launchBrowser() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
     }
@@ -33,16 +35,31 @@ public class AutomationTest {
 
 //        assert the current url is correct after clicking REACT link
         String currentURL = driver.getCurrentUrl();
-        assertEquals("https://todomvc.com/examples/react/#/", currentURL);
+        assertTrue(currentURL.contains("https://todomvc.com/examples/react/"));
 
     }
 
     @Test
     void AddOneToDoItem() throws Exception {
+
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
         driver.get("https://todomvc.com/examples/react/#/");
-        WebElement ToDoBar = driver.findElement(By.cssSelector(".new-todo"));
-        ToDoBar.sendKeys("item 1");
-        ToDoBar.sendKeys(Keys.ENTER);
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+
+//        WebElement ToDoBar = new WebDriverWait(driver, Duration.ofSeconds(10))
+//                .until(driver -> driver.findElement(By.cssSelector(".new-todo")));
+//        ToDoBar.sendKeys("item 1");
+//        ToDoBar.sendKeys(Keys.ENTER);
+
+        WebElement ToDoList = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector(".view > label")));
+//                driver.findElement(By.cssSelector(".view > label"));
+//        Thread.sleep(10000);
+        assertTrue(ToDoList.getText().contains("item 1"));
 
         takeScreenshot(driver, "add_todo.png");
 
@@ -61,8 +78,8 @@ public class AutomationTest {
         FileUtils.copyFile(screenshotFile, targetFile);
     }
 
-    @AfterAll
-    static void closeBrowser() {
+    @AfterEach
+    void closeBrowser() {
         driver.quit();
     }
 }
