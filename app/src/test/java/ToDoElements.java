@@ -10,6 +10,11 @@ public class ToDoElements {
 
     private By CompletedToggleBy = By.cssSelector(".toggle");
 
+    private By ClearCompletedBy = By.className("clear-completed");
+
+
+
+
     public ToDoElements(WebDriver driver) {
         this.driver = driver;
     }
@@ -31,5 +36,11 @@ public class ToDoElements {
         WebElement completedToggle = driver.findElement(CompletedToggleBy);
         completedToggle.click();
         return completedToggle.isSelected();
+    }
+
+    public boolean ClearCompletedItems() {
+        WebElement ClearCompleted = driver.findElement(ClearCompletedBy);
+        ClearCompleted.click();
+        return ClearCompleted.isSelected();
     }
 }

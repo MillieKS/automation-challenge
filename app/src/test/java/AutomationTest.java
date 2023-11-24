@@ -175,11 +175,53 @@ public class AutomationTest {
 
     }
 
+    @Test
+    void DeleteToDoItem() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+        toDoElements.addToDoItem("item 2");
+
+
+//        we click toggle to mark as completed
+//        li:nth-child(1) .toggle
+
+        WebElement FirstItemToggle = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector("li:nth-child(1) .toggle")));
+
+        FirstItemToggle.click();
+
+        takeScreenshot(driver, "click_first_toggle.png");
+
+
+
+        WebElement ClearCompleted = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector(".clear-completed")));
+
+        ClearCompleted.click();
+
+        WebElement ToDoList = driver.findElement(By.cssSelector(".view > label"));
+        assertFalse(ToDoList.getText().contains("item 1"));
+
+        takeScreenshot(driver, "clear_completed.png");
+
+
+//        clear the completed
+//        toDoElements.ClearCompletedItems();
+//        takeScreenshot(driver, "clear_completed.png");
+//
+//        assertTrue(toDoElements.ClearCompletedItems());
+
+    }
 
 
 
 
-//    for taking screenshots
+    //    for taking screenshots
     public static void takeScreenshot(WebDriver webdriver, String desiredPath) throws Exception{
         TakesScreenshot screenshot = ((TakesScreenshot)webdriver);
         File screenshotFile = screenshot.getScreenshotAs(OutputType.FILE);
