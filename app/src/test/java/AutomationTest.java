@@ -71,6 +71,7 @@ public class AutomationTest {
         ToDoElements toDoElements = new ToDoElements(driver);
 
         driver.get("https://todomvc.com/examples/react/#/");
+        Thread.sleep(5000);
 
 //        here we call addToDoItem
         toDoElements.addToDoItem("");
@@ -109,7 +110,6 @@ public class AutomationTest {
 
         takeScreenshot(driver, "add_single_character_todo.png");
 
-//        new
 
     }
 

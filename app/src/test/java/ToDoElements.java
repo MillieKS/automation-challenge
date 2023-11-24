@@ -8,6 +8,8 @@ public class ToDoElements {
     private By ToDoBarBy = By.cssSelector(".new-todo");
     private By ToDoListBy = By.cssSelector(".view > label");
 
+    private By CompletedToggleBy = By.cssSelector(".toggle");
+
     public ToDoElements(WebDriver driver) {
         this.driver = driver;
     }
@@ -16,5 +18,18 @@ public class ToDoElements {
         WebElement ToDoBar = driver.findElement(ToDoBarBy);
         ToDoBar.sendKeys(ToDoTerm);
         ToDoBar.sendKeys(Keys.ENTER);
+    }
+
+//    public void ToDoList() {
+//        WebElement ToDoList = driver.findElement(ToDoListBy);
+//        ToDoList.click();
+//    }
+
+
+
+    public boolean clickToggle() {
+        WebElement completedToggle = driver.findElement(CompletedToggleBy);
+        completedToggle.click();
+        return completedToggle.isSelected();
     }
 }
