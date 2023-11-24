@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -293,6 +294,59 @@ public class AutomationTest {
 
         assertTrue(ToDoCount.getText().contains("2 items left"));
         takeScreenshot(driver, "2_items_left.png");
+
+    }
+
+    @Test
+    void CheckStatusBarIsEmpty() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+        toDoElements.addToDoItem("item 2");
+
+
+//        we click toggle to mark as completed
+//        li:nth-child(1) .toggle
+
+        WebElement AllToggleItems = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector(".main > label")));
+
+        AllToggleItems.click();
+
+        takeScreenshot(driver, "click_first_toggle.png");
+
+        WebElement ClearCompleted = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector(".clear-completed")));
+
+        ClearCompleted.click();
+
+//        WebElement ToDoCount = driver.findElement(By.className("todo-count"));
+//        assertFalse(ToDoCount.isDisplayed());
+
+        // Check if the todo count element is absent or has no text
+        List<WebElement> toDoCount = driver.findElements(By.className("todo-count"));
+        assertEquals(0, toDoCount.size(), "Todo count element still present");
+
+
+//        assertFalse(isElementPresent(driver, By.className("todo-count")), "Element is not present");
+//    }
+//    private boolean isElementPresent(WebDriver driver, By locator) {
+//        try {
+//            // Attempt to find the element
+//            driver.findElement(locator);
+//            return true;  // Element found, so it is present
+//        } catch (org.openqa.selenium.NoSuchElementException e) {
+//            return false;  // Element not found, so it is not present
+//        }
+
+
+
+
+
 
     }
 
