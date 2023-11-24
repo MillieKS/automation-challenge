@@ -51,21 +51,17 @@ public class AutomationTest {
 //        here we call addToDoItem
         toDoElements.addToDoItem("item 1");
 
-//        WebElement ToDoBar = new WebDriverWait(driver, Duration.ofSeconds(10))
-//                .until(driver -> driver.findElement(By.cssSelector(".new-todo")));
-//        ToDoBar.sendKeys("item 1");
-//        ToDoBar.sendKeys(Keys.ENTER);
 
         WebElement ToDoList = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.cssSelector(".view > label")));
-//                driver.findElement(By.cssSelector(".view > label"));
-//        Thread.sleep(10000);
+
+
         assertTrue(ToDoList.getText().contains("item 1"));
 
         takeScreenshot(driver, "add_todo.png");
 
     }
-//    Can't add a todo item if the input is empty
+
     @Test
     void InsertEmptyToDoItem() throws Exception {
 //        here we import from the ToDoElements Class
@@ -77,15 +73,10 @@ public class AutomationTest {
 //        here we call addToDoItem
         toDoElements.addToDoItem("");
 
-//        WebElement ToDoBar = new WebDriverWait(driver, Duration.ofSeconds(10))
-//                .until(driver -> driver.findElement(By.cssSelector(".new-todo")));
-////                driver.findElement(By.cssSelector(".new-todo"));
-//
-//        ToDoBar.sendKeys("");
-//        ToDoBar.sendKeys(Keys.ENTER);
+        // Check if the todo list element is absent or has no todo items
+        List<WebElement> toDoList = driver.findElements(By.cssSelector(".view > label"));
+        assertEquals(0, toDoList.size(), "Todo List element still present");
 
-        // WebElement ToDoList = driver.findElement(By.cssSelector(".view > label"));
-        // assertFalse("TodoList exists", ToDoList != null);
         takeScreenshot(driver, "empty_todo.png");
 
 
@@ -101,10 +92,6 @@ public class AutomationTest {
 //        here we call addToDoItem
         toDoElements.addToDoItem("A");
 
-//        WebElement ToDoBar = new WebDriverWait(driver, Duration.ofSeconds(10))
-//                .until(driver -> driver.findElement(By.cssSelector(".new-todo")));
-//        ToDoBar.sendKeys("A");
-//        ToDoBar.sendKeys(Keys.ENTER);
 
         WebElement ToDoList = driver.findElement(By.cssSelector(".view > label"));
         assertTrue(ToDoList.getText().contains("A"));
@@ -172,8 +159,6 @@ public class AutomationTest {
 
         assertTrue(toDoElements.clickToggle());
 
-
-
     }
 
     @Test
@@ -199,7 +184,6 @@ public class AutomationTest {
         takeScreenshot(driver, "click_first_toggle.png");
 
 
-
         WebElement ClearCompleted = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.cssSelector(".clear-completed")));
 
@@ -209,13 +193,6 @@ public class AutomationTest {
         assertFalse(ToDoList.getText().contains("item 1"));
 
         takeScreenshot(driver, "clear_completed.png");
-
-
-//        clear the completed
-//        toDoElements.ClearCompletedItems();
-//        takeScreenshot(driver, "clear_completed.png");
-//
-//        assertTrue(toDoElements.ClearCompletedItems());
 
     }
 
@@ -309,8 +286,7 @@ public class AutomationTest {
         toDoElements.addToDoItem("item 2");
 
 
-//        we click toggle to mark as completed
-//        li:nth-child(1) .toggle
+//        we click toggle to mark all as completed
 
         WebElement AllToggleItems = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> driver.findElement(By.cssSelector(".main > label")));
@@ -324,29 +300,84 @@ public class AutomationTest {
 
         ClearCompleted.click();
 
-//        WebElement ToDoCount = driver.findElement(By.className("todo-count"));
-//        assertFalse(ToDoCount.isDisplayed());
-
         // Check if the todo count element is absent or has no text
         List<WebElement> toDoCount = driver.findElements(By.className("todo-count"));
         assertEquals(0, toDoCount.size(), "Todo count element still present");
 
 
-//        assertFalse(isElementPresent(driver, By.className("todo-count")), "Element is not present");
-//    }
-//    private boolean isElementPresent(WebDriver driver, By locator) {
-//        try {
-//            // Attempt to find the element
-//            driver.findElement(locator);
-//            return true;  // Element found, so it is present
-//        } catch (org.openqa.selenium.NoSuchElementException e) {
-//            return false;  // Element not found, so it is not present
-//        }
+    }
+
+    @Test
+    void ToggleBetweenActiveCompletedAndAll() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+        toDoElements.addToDoItem("item 2");
 
 
+//        we click toggle to mark all as completed
+
+        WebElement AllCategory = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.linkText("All")));
+
+        AllCategory.click();
+        takeScreenshot(driver, "click_All_category.png");
+
+        String allCategoryURL = driver.getCurrentUrl();
+        assertTrue(allCategoryURL.contains("https://todomvc.com/examples/react/#/"));
+
+        takeScreenshot(driver, "click_All_category.png");
 
 
+        WebElement ActiveCategory = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.linkText("Active")));
 
+        ActiveCategory.click();
+        takeScreenshot(driver, "click_Active_category.png");
+
+        String activeCategoryURL = driver.getCurrentUrl();
+        assertTrue(activeCategoryURL.contains("https://todomvc.com/examples/react/#/active"));
+
+
+        WebElement CompletedCategory = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.linkText("Completed")));
+
+        CompletedCategory.click();
+        takeScreenshot(driver, "click_Completed_category.png");
+
+        String completedCategoryURL = driver.getCurrentUrl();
+        assertTrue(completedCategoryURL.contains("https://todomvc.com/examples/react/#/completed"));
+
+    }
+
+    @Test
+    void ClearCompletedLinkAppearsWhenThereAreCompletedItem() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+
+
+//        we click to mark 1 item completed
+//        li:nth-child(1) .toggle
+        WebElement FirstItemToggle = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector("li:nth-child(1) .toggle")));
+
+        FirstItemToggle.click();
+
+//        locate the Clear Completed link
+        WebElement ClearCompletedLink = driver.findElement(By.cssSelector(".clear-completed"));
+
+//        assert the Clear Completed Link is live
+        assertNotNull(ClearCompletedLink);
+        takeScreenshot(driver, "clear_completed_link_appears.png");
 
     }
 

@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 public class ToDoElements {
     protected WebDriver driver;
     private By ToDoBarBy = By.cssSelector(".new-todo");
-    private By ToDoListBy = By.cssSelector(".view > label");
 
     private By CompletedToggleBy = By.cssSelector(".toggle");
 
@@ -24,12 +23,6 @@ public class ToDoElements {
         ToDoBar.sendKeys(ToDoTerm);
         ToDoBar.sendKeys(Keys.ENTER);
     }
-
-//    public void ToDoList() {
-//        WebElement ToDoList = driver.findElement(ToDoListBy);
-//        ToDoList.click();
-//    }
-
 
 
     public boolean clickToggle() {
