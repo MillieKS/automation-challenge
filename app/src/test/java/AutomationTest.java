@@ -218,6 +218,87 @@ public class AutomationTest {
 
     }
 
+    @Test
+    void CompleteAllToDoItem() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+        toDoElements.addToDoItem("item 2");
+
+//        we click toggle to mark all as completed
+
+        WebElement AllToggleItems = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector(".main > label")));
+
+        AllToggleItems.click();
+
+        WebElement ToDoCount = driver.findElement(By.className("todo-count"));
+
+        assertTrue(ToDoCount.getText().contains("0 items left"));
+        takeScreenshot(driver, "0_items_left.png");
+
+    }
+
+    @Test
+    void OneItemLeft() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+        toDoElements.addToDoItem("item 2");
+
+//        we click to mark 1 item completed
+//        li:nth-child(1) .toggle
+        WebElement FirstItemToggle = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector("li:nth-child(1) .toggle")));
+
+        FirstItemToggle.click();
+
+
+
+        WebElement ToDoCount = driver.findElement(By.className("todo-count"));
+
+        assertTrue(ToDoCount.getText().contains("1 item left"));
+        takeScreenshot(driver, "1_item_left.png");
+
+    }
+
+    @Test
+    void TwoItemsLeft() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+        toDoElements.addToDoItem("item 2");
+        toDoElements.addToDoItem("item 3");
+
+//        we click to mark 1 item completed
+//        li:nth-child(1) .toggle
+        WebElement FirstItemToggle = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> driver.findElement(By.cssSelector("li:nth-child(1) .toggle")));
+
+        FirstItemToggle.click();
+
+        WebElement ToDoCount = driver.findElement(By.className("todo-count"));
+
+        assertTrue(ToDoCount.getText().contains("2 items left"));
+        takeScreenshot(driver, "2_items_left.png");
+
+    }
+
+
+
+
 
 
 
