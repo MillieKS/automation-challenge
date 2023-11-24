@@ -113,6 +113,68 @@ public class AutomationTest {
 
     }
 
+    @Test
+    void AddAccentedCharacterToDoItem() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("à");
+
+        WebElement ToDoList = driver.findElement(By.cssSelector(".view > label"));
+        assertTrue(ToDoList.getText().contains("à"));
+
+        takeScreenshot(driver, "add_accented_character_todo.png");
+
+
+    }
+
+//    @Test
+//    void AddEmojiToDoItem() throws Exception {
+////        here we import from the ToDoElements Class
+//        ToDoElements toDoElements = new ToDoElements(driver);
+//
+//        driver.get("https://todomvc.com/examples/react/#/");
+//
+////        here we call addToDoItem
+//        toDoElements.addToDoItem("\uD83D\uDE01");
+//
+//        WebElement ToDoList = driver.findElement(By.cssSelector(".view > label"));
+//        assertTrue(ToDoList.getText().contains("\uD83D\uDE01"));
+//
+//        takeScreenshot(driver, "add_emoji_todo.png");
+//
+//
+//    }
+
+    @Test
+    void UntickCompletedToDoItem() throws Exception {
+//        here we import from the ToDoElements Class
+        ToDoElements toDoElements = new ToDoElements(driver);
+
+        driver.get("https://todomvc.com/examples/react/#/");
+
+//        here we call addToDoItem
+        toDoElements.addToDoItem("item 1");
+
+
+//        we click toggle to mark as completed
+        toDoElements.clickToggle();
+        takeScreenshot(driver, "first_click_toggle.png");
+        
+
+//        click toggle again to mark as incomplete
+        toDoElements.clickToggle();
+        takeScreenshot(driver, "second_unclick_toggle.png");
+
+        assertTrue(toDoElements.clickToggle());
+
+
+
+    }
+
 
 
 
